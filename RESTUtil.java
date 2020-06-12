@@ -105,6 +105,7 @@ public class RESTUtil {
         Gson gson = new Gson();
 
         endPointURL += setGETParams(params);
+        endPointURL=encodeURL(endPointURL);
         //store request
         jsonRequest = endPointURL;
         URL url = new URL(endPointURL);
@@ -142,6 +143,7 @@ public class RESTUtil {
         Gson gson = new Gson();
 
         endPointURL += setGETParams(params);
+         endPointURL=encodeURL(endPointURL);
         //store request
         jsonRequest = endPointURL;
         URL url = new URL(endPointURL);
@@ -260,8 +262,7 @@ public class RESTUtil {
         while (iterator.hasNext()) {
             Map.Entry<String, String> param = iterator.next();
             try {
-                bodyBuilder.append(param.getKey()).append('=').append(URLEncoder.encode(param.getValue(),
-                                                                                        "UTF-8"));
+                bodyBuilder.append(param.getKey()).append('=').append(param.getValue());
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -275,7 +276,11 @@ public class RESTUtil {
         return finalURL;
 
     }
-
+private String encodeURL(String plainURL) throws Exception{
+ URL url= new URL(plainURL);
+URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+    return uri.toASCIIString();
+}
 
     public String getJsonRequest() {
         return jsonRequest;
